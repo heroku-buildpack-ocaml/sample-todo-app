@@ -1,0 +1,6 @@
+.hero-unit {
+    background-image: url("/img/background.png");
+    background-position: 40px 50%;
+    background-repeat: no-repeat;
+    padding-left: 250px;
+}
