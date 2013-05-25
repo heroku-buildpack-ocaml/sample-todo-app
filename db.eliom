@@ -44,11 +44,19 @@ let incomplete () =
       Task.create ~id ~name
     end results
 
-
 let add { Task.name; _ } =
   let open Lwt in
   get_db () >>= fun dbh ->
     Lwt_Query.query dbh
     <:insert< $task_table$ :=
       { name = $string:name$; is_done = false } >>
+
+let done_it { Task.id; _ } =
+  let open Lwt in
+  get_db () >>= fun dbh ->
+    Lwt_Query.query dbh
+      <:update< t in $table$
+                := { is_done = true }
+                | t.id = $int32:Int32.of_int id$ >>
+
 
