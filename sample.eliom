@@ -23,9 +23,10 @@ let add_service_fallback =
 let add_service = Eliom_registration.Redirection.register_post_service
   ~post_params:(Eliom_parameter.string "name")
   ~fallback:add_service_fallback
-  (fun () value ->
-    print_endline value;
-    Lwt.return main_service)
+  (fun () name ->
+    let open Lwt in
+    Db.add (Task.create ~id:~-1 ~name)
+    >> Lwt.return main_service)
 
 let () =
   Sample_app.register
@@ -50,7 +51,7 @@ let () =
                  h2 [ pcdata "TODOs" ];
                  post_form ~service:add_service begin fun name -> [
                    div ~a:[ a_class ["input-append"]] [
-                     input ~input_type:`Text ~name ();
+                     input  ~a:[ a_placeholder "task name" ] ~input_type:`Text ~name ();
                      button ~a:[ a_class [ "btn" ]] ~button_type:`Submit [ pcdata "Add" ]
                      ]]
                  end ();

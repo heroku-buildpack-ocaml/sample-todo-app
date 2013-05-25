@@ -12,6 +12,11 @@ let table = <:table< task(
   is_done boolean NOT NULL
 ) >>
 
+let task_table = <:table< task(
+  name text NOT NULL,
+  is_done boolean NOT NULL
+) >>
+
 let get_db : unit -> unit Lwt_PGOCaml.t Lwt.t =
   let db_handler =
     ref None in
@@ -21,7 +26,8 @@ let get_db : unit -> unit Lwt_PGOCaml.t Lwt.t =
     | None -> Lwt_PGOCaml.connect ~database:"test" ~user:"postgres" ()
 
 let incomplete () =
-  Lwt.(get_db ()
+  let open Lwt in
+  get_db ()
   >>= fun dbh ->
     Lwt_Query.view dbh
       <:view< {name = task.name; id = task.id} |
@@ -36,5 +42,13 @@ let incomplete () =
         Sql.get obj#name
       in
       Task.create ~id ~name
-    end results)
+    end results
+
+
+let add { Task.name; _ } =
+  let open Lwt in
+  get_db () >>= fun dbh ->
+    Lwt_Query.query dbh
+    <:insert< $task_table$ :=
+      { name = $string:name$; is_done = false } >>
 
