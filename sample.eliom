@@ -31,6 +31,8 @@ let () =
   Sample_app.register
     ~service:main_service
     (fun () () ->
+      let open Lwt in
+      Db.incomplete () >>= fun tasks ->
       Lwt.return
         (Eliom_tools.F.html
            ~title:"Simple Todo tool: Eliom on Heroku sample"
@@ -58,7 +60,7 @@ let () =
                    [ tbody @@ List.map (fun { Task.name } ->
                        tr [ td [ pcdata name];
                             td [ Raw.a ~a:[ a_class ["btn"]] [ pcdata "DONE" ] ]])
-                     Tasks.demo
+                       tasks
                ]];
                article [
                  h2 [ pcdata "About this" ];

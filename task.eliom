@@ -1,6 +1,7 @@
 type t = {
+  id : int;
   name : string
 }
 
-let create name =
-  { name }
+let create ~id ~name =
+  { id; name }

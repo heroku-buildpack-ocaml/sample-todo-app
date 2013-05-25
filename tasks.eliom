@@ -9,6 +9,3 @@ let add x xs  =
 
 let demo =
   init ()
-  +> add (Task.create "Buy milk")
-  +> add (Task.create "Prove theorem")
-  +> add (Task.create "Install OCaml")
