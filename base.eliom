@@ -1,5 +1,7 @@
-let (@@) f x =
-  f x
+{shared{
+  let (@@) f x =
+    f x
 
-let (+>) x f =
-  f x
+  let (+>) x f =
+    f x
+}}

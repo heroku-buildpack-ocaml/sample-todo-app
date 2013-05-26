@@ -43,11 +43,44 @@ let done_service =
       Db.done_it (Task.create ~id ~name:"-")
       >> Lwt.return main_service)
 
+(* main service *)
+let task_form =
+  let open Html5.D in
+  post_form ~xhr:false ~service:add_service begin fun name -> [
+    div ~a:[ a_class ["input-append"]] [
+      input  ~a:[ a_placeholder "task name" ] ~input_type:`Text ~name ();
+                    button ~a:[ a_class [ "btn"; "btn-primary"]]
+                           ~button_type:`Submit
+                           [ pcdata "Add" ]
+                    ]]
+    end ()
+
+{client{
+  let submit ?use_capture target =
+    Lwt_js_events.make_event (Dom.Event.make "submit") ?use_capture target
+  let submits ?use_capture t =
+    Lwt_js_events.seq_loop submit ?use_capture t
+}}
+
+let init () = {unit{
+  try
+    let dom =
+      Eliom_content.Html5.To_dom.of_form %task_form
+    in
+    Lwt.async ( fun _ ->
+      submits dom (fun e _ ->
+        Lwt_js_events.preventDefault e;
+        Lwt.return ()))
+  with e ->
+    Eliom_lib.jsdebug e
+}}
+
 let () =
   Sample_app.register
     ~service:main_service
     (fun () () ->
       let open Lwt in
+      ignore @@ init ();
       Db.incomplete () >>= fun tasks ->
       Lwt.return
         (Eliom_tools.F.html
@@ -62,14 +95,9 @@ let () =
                   h1 [ pcdata "Simple Todo tool" ];
                   p  [ pcdata "Sample for Eliom on Heroku" ]
                 ]];
-               article [
+              article [
                 h2 [ pcdata "TODOs" ];
-                post_form ~service:add_service begin fun name -> [
-                  div ~a:[ a_class ["input-append"]] [
-                    input  ~a:[ a_placeholder "task name" ] ~input_type:`Text ~name ();
-                    button ~a:[ a_class [ "btn" ]] ~button_type:`Submit [ pcdata "Add" ]
-                  ]]
-                end ();
+                task_form;
                 tablex
                   ~a:[ a_class [ "table"; "table-striped" ]]
                   ~thead:(thead [tr [ th [ pcdata "TODO" ]; th [] ]]) @@
