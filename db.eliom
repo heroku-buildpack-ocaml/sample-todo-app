@@ -30,7 +30,7 @@ let incomplete () =
   get_db ()
   >>= fun dbh ->
     Lwt_Query.view dbh
-      <:view< {name = task.name; id = task.id} |
+      <:view< {name = task.name; id = task.id} order by task.id desc |
                task in $table$;
                task.is_done = false >>
     >>= fun results ->
