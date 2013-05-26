@@ -58,5 +58,3 @@ let done_it { Task.id; _ } =
       <:update< t in $table$
                 := { is_done = true }
                 | t.id = $int32:Int32.of_int id$ >>
-
-

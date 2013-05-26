@@ -4,3 +4,19 @@
     background-repeat: no-repeat;
     padding-left: 250px;
 }
+
+tr.new {
+  animation-duration: 1s;
+  animation-name: fadeIn;
+  animation-timing-function: ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1.0;
+  }
+}

@@ -8,7 +8,7 @@ PROJECT_NAME := sample
 # Source files for the server
 SERVER_FILES := $(wildcard *.eliomi *.eliom)
 # Source files for the client
-CLIENT_FILES := base.eliom sample.eliom
+CLIENT_FILES := base.eliom task.eliom sample.eliom
 
 # OCamlfind packages for the server
 SERVER_PACKAGES := macaque.syntax
