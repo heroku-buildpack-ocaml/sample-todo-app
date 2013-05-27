@@ -20,3 +20,14 @@ tr.new {
     opacity: 1.0;
   }
 }
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+
+.hidden {
+  animation-duration: 1s;
+  animation-name: fadeOut;
+  animation-transition-property: opacity;
+}
