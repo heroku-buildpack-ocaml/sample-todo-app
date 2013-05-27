@@ -213,6 +213,7 @@ let () =
     ~service:main_service
     (fun () () ->
       let open Lwt in
+      print_endline "service";
       Db.incomplete () >>= fun tasks ->
         let task_table =
           Html5.D.tbody @@ List.map task_elt tasks

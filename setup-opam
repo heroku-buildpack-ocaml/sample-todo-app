@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+CACHE_DIR=$1
+
+function setup() {
+  dir=$1
+  url=$2
+
+  cache=$CACHE_DIR/$(basename $url)
+
+  if [ -f $cache ]; then
+    echo "use from $cache"
+    tar xzf $cache -C $dir
+  else
+    echo "fetching $url"
+    curl -L $url -s -o - | tee $cache | tar xzf - -C $dir
+  fi
+}
+
+
+setup /app/vendor/ocamlbrew/opamlib/system http://codefirst.org/mzp/eliom-3.0.3.tgz
