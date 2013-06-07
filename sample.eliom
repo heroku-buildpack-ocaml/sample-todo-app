@@ -244,9 +244,10 @@ let () =
                 h2 [ pcdata "About this" ];
                 p  [ pcdata "This is ";
                     Raw.a ~a:[ a_href @@
-                      Xml.uri_of_string "https://github.com/mzp/heroku-buildpack-ocsigen"
+                      Xml.uri_of_string
+                      "https://github.com/heroku-buildpack-ocaml/heroku-buildpack-ocaml"
                     ] [
-                      pcdata "heroku-buildpack-ocsigen"
+                      pcdata "heroku-buildpack-ocaml"
                     ];
                     pcdata " sample."]
               ]
